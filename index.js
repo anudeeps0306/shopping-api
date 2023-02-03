@@ -18,19 +18,20 @@ app.get('/api/products', async (req, res) => {
     res.status(200).send(data);
 });
 
-app.get('/api/insert', async (req, res) => {
+app.post('/api/insert', async (req, res) => {
     const data = {
-        id : "1",
-        name : "Nike Slim Shirt",
-        company : "Nike",
-        price : 120,
-        colors : ["red", "black", "blue"],
-        image : "/images/p1.jpg",
-        description : "high quality product",
-        category : "shirts",
-        featured: true,
-        shipping: true,
-    };
+        id : req.body.id,
+        name : req.body.name,
+        company : req.body.company,
+        price : req.body.price,
+        colors : req.body.colors,
+        image : req.body.image,
+        description : req.body.description,
+        category : req.body.category,
+        featured: req.body.featured,
+        shipping: req.body.shipping,
+    }
+    console.log(data);
     const newProduct = await new product(data);
     newProduct.save();
     res.status(200).send(newProduct);

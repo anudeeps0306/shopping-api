@@ -1,22 +1,26 @@
 import express from 'express';
-import mongoose from "mongoose";
 import cors from 'cors';
 import product from './models/product.js';
+import postRoute from './router/post.js'
+import authRoute from './router/auth.js'
+import connectMongodb from './connections/connectMongodb'
 
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({extended: true}));
+app.use(connectMongodb());
 
-mongoose.connect('mongodb+srv://anudeep:1234@cluster0.dvbq9n0.mongodb.net/shop?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true },() =>{
-    console.log('Connected to database');
+app.get('/home', async (req,res) => {
+    res.send('Hello World!');
 });
+ 
 
-app.get('/api/products', async (req, res) => {
-    const data = await product.find({});
-    res.status(200).send(data);
-});
+app.use('/api/post',postRoute);
+app.use('/api/auth',authRoute);
+
 
 app.post('/api/insert', async (req, res) => {
     const data = {

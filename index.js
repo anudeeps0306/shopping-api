@@ -3,15 +3,14 @@ import cors from 'cors';
 import product from './models/product.js';
 import postRoute from './router/post.js'
 import authRoute from './router/auth.js'
-import connectMongodb from './connections/connectMongodb'
+import connectMongodb from './connections/connectMongodb.js'
 
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({extended: true}));
-app.use(connectMongodb());
+app.use(connectMongodb);
 
 app.get('/home', async (req,res) => {
     res.send('Hello World!');
@@ -35,7 +34,6 @@ app.post('/api/insert', async (req, res) => {
         featured: req.body.featured,
         shipping: req.body.shipping,
     }
-    console.log(data);
     const newProduct = await new product(data);
     newProduct.save();
     res.status(200).send(newProduct);
